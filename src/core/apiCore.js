@@ -1,7 +1,7 @@
 import { API } from "../config";
 
 export const createOrder = (order) => { 
-    return fetch(`${API}/Order`, {
+    return fetch(`${API}/Orders`, {
         method: "POST",
         headers: {
             Accept: "application/json",
@@ -18,7 +18,7 @@ export const createOrder = (order) => {
 };
 
 export const getOrders = () => {
-    return fetch(`${API}/Order`, {
+    return fetch(`${API}/Orders`, {
         method: "GET"
     })
         .then(response => {

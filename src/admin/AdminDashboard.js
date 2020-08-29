@@ -1,30 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { Link } from "react-router-dom";
-import { getProducts,  getAvailables } from "./apiAdmin";
+import { getAvailables } from "./apiAdmin";
 import { getOrders } from "../core/apiCore";
 import Card from "../core/Card";
+import { isAuthenticated } from "../auth";
 
-const AdminDashboard = () => {   
-    const [products, setProducts] = useState([]);    
+const AdminDashboard = () => { 
     const [availables, setAvailables] = useState([]);
     const [orders, setOrders] = useState([]);    
     const [loading, setLoading] = useState(false);
 
+    const  user = isAuthenticated();
 
-     const initProducts = () => {
-        getProducts().then(data => {
-            if (!data) {
-               // setError(data.error); 
-                setLoading(true);
-            } else {
-                setLoading(false);
-                setProducts(data);
-            }
-        });
-    };
-
-    
+    //console.log(user);
 
     const initAvailables = () => {
         getAvailables().then(data => {
@@ -48,8 +37,7 @@ const AdminDashboard = () => {
         });
     };
 
-    useEffect(() => {
-        initProducts();        
+    useEffect(() => {              
         initAvailables();  
         initOrders();      
     }, []);
@@ -94,46 +82,23 @@ const AdminDashboard = () => {
     const adminInfo = () => {
         return (
             <div className="card mb-5 mt-2">
-                <h3 className="card-header">Admin Information</h3>
-                <ul className="list-group">
-                    <li className="list-group-item">Admin Name</li>
-                    <li className="list-group-item">Admin Email</li>  
-                    <li className="list-group-item">Admin</li>                    
+                <h3 className="card-header">About you</h3>
+                <ul className="list-group text-muted">
+                    <li className="list-group-item">You are: {user.lastName} {user.firstName}</li>
+                    <li className="list-group-item">Username: {user.username}</li>  
+                    <li className="list-group-item">Registered with: Admin</li>                    
                 </ul>
             </div>
         );
     };
-
-    const productInfo = () => {
-        return (
-            <div className="mt-2">
-                <h3 className="">Product Information</h3>
-                <div className="row">
-                    {products.map((data, i) => (
-                       <div className="card container-fluid">
-                         <div className="row" style={{ borderBottom: "3px solid indigo"}}>
-                            <div className="col-7 mx-auto col-lg-5  my-2">{data.productName}</div>
-                             <div className="col-7 mx-auto col-lg-2  my-2 d-flex justify-content-center">                                                       
-                                <button className="btn btn-outline-warning ">
-                                  Delete
-                                 </button>
-                            </div>
-                         </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        );
-    };
-
 
     const availableInfo = () => {
         return (
             <div className="">
                 <h3 className="">Available Hours Information</h3>
                 <div className="row">
-                    {availables.map((data, i) => (
-                       <div className="card container-fluid">
+                    {availables.map((data, a) => (
+                       <div key={a} className="card container-fluid">
                          <div className="row" style={{  width: "10rem"}}>
                             <div className="col-8 mx-auto col-lg-6  my-2">{data.availableName}</div>
                              <div className="col-5 mx-auto col-lg-2  my-2">                                                       
@@ -166,7 +131,7 @@ const AdminDashboard = () => {
     return (
         <Layout
             title="Dashboard"
-            description={`G'day Admin!`}
+            description={`G'day ${user.firstName} ${user.lastName}`}
             className="container-fluid"
         >
             <div className="main main-raised TextStyle">
@@ -174,9 +139,7 @@ const AdminDashboard = () => {
                     <div className="col-md-3 ">{adminLinks()}<br/>{adminInfo()}</div>
                     <div className="col-md-8 ">
                         {showLoading()}
-                        {orderInfo()}   <br />
-                        {productInfo()}   <br />
-                                                 
+                        {orderInfo()}   <br />                                 
                     </div>
                 </div>
             </div>

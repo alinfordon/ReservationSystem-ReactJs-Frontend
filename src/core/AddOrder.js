@@ -146,7 +146,7 @@ const AddOrder = () => {
             <h4>BOOK AN APPOINTMENT</h4><br/>           
 
             <div className="form-group">
-                <label className="">Your Name</label>
+                <label className="text-muted">Your Name</label>
                 <input
                     onChange={handleChange("name")}
                     type="text"
@@ -155,10 +155,10 @@ const AddOrder = () => {
                 />
             </div>
             <div className="form-group">
-                <label className="">Choose Location</label>
+                <label className="text-muted">Choose Location</label>
                 <select
                     onChange={handleChange("orderLocation")}
-                    className="form-control TextStyle"
+                    className="form-control "
                 >
                     <option>Select</option>
                     {locations &&
@@ -170,10 +170,10 @@ const AddOrder = () => {
                 </select>
             </div>
             <div className="form-group">
-                <label className="">Choose Our Services</label>
+                <label className="text-muted">Choose Our Services</label>
                 <select
                     onChange={handleChange("orderProduct")}
-                    className="form-control TextStyle"
+                    className="form-control"
                 >
                     <option>Select</option>
                     {products &&
@@ -185,19 +185,19 @@ const AddOrder = () => {
                 </select>
             </div>
            <div className="form-group">
-                <label className="">Choose date of reservation</label>
+                <label className="text-muted">Choose date of reservation</label>
                 <input
                     onChange={handleChange("dateOfReservation")}
                     type="date"
-                    className="form-control TextStyle"
+                    className="form-control"
                     value={dateOfReservation}
                 />
             </div>
             <div className="form-group">
-                <label className="">Choose Hours</label>
+                <label className="text-muted">Choose Hours</label>
                 <select
                     onChange={handleChange("available")}
-                    className="form-control TextStyle"
+                    className="form-control"
                 >
                     <option>Select</option>
                     {array2 &&

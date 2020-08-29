@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { Link, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../auth";
+import { addLocalLocation, getLocalLocation, emptyLocalLocation } from "./locationHelper";
 import { createLocation, getLocations, deleteLocation, getLocation, updateLocation } from "./apiAdmin";
 
 const AddLocation = () => {
     const [locationName, setName] = useState("");
     const [locationId, setLocationId] = useState("");
     const [locations, setLocations] = useState([]);
+    const [local, setLocal] = useState("");
     const [edit, setEdit] = useState(false);
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -15,6 +17,7 @@ const AddLocation = () => {
     const [redirect, setRedirect] = useState(false);
 
     const  token  = isAuthenticated().token;
+    const  {firstName, lastName}  = isAuthenticated();
     
 
      const initLocations = () => {
@@ -29,8 +32,13 @@ const AddLocation = () => {
         });
     };
 
+     const addDefaultLocation = () => {
+        addLocalLocation();
+    }; 
+
     useEffect(() => {       
-        initLocations();            
+        initLocations();     
+        setLocal(getLocalLocation('location'));             
     }, []);
 
     const shouldRedirect = redirect => {
@@ -44,6 +52,7 @@ const AddLocation = () => {
         setName(e.target.value); 
     };
 
+    
     const destroy = locationId => { 
         deleteLocation(locationId).then(data => {
             if (data.error) {
@@ -125,7 +134,8 @@ const AddLocation = () => {
                 />
             </div>
             <button onClick={clickUpdate} className="btn btn-outline-danger mr-2">Save</button>
-            <button onClick={() => (setEdit(false), setName(""))} className="btn btn-outline-danger">Cancel</button>
+            <button onClick={() => (setEdit(false), setName(""))} className="btn btn-outline-danger mr-4">Cancel</button>         
+            
         </form>
     );
 
@@ -139,13 +149,23 @@ const AddLocation = () => {
                        <div key={i} className="card container-fluid text-muted">
                          <div className="row" style={{ borderBottom: "3px solid indigo"}}>
                             <div className="col-7 mx-auto col-lg-8  my-2">{data.locationName}</div>
-                             <div className="col-7 mx-auto col-lg-2  my-2 d-flex justify-content-center">                                                       
-                                <button onClick={() => initEdit(data.locationId)} className="btn btn-outline-warning mr-4">
+                             <div className="col-7 mx-auto col-lg-4  my-2 d-flex justify-content-center">                                                       
+                                <button onClick={() => initEdit(data.locationId)} className="btn btn-outline-primary mr-2">
                                   Edit
                                  </button>
-                                 <button onClick={() => destroy(data.locationId)} className="btn btn-outline-danger ">
+                                 <button onClick={() => destroy(data.locationId)} className="btn btn-outline-danger mr-2">
                                   Delete
-                                 </button>
+                                 </button>        
+                                 {local === data.locationName ?
+                                <button className="btn btn-outline-success mr-4" 
+                                                onClick={() => (emptyLocalLocation(data.locationName), setRedirect(true))} >
+                                                Is Default
+                                </button>:
+                                <button className="btn btn-outline-primary mr-4" 
+                                                onClick={() => (addLocalLocation(data.locationName), setRedirect(true))} >
+                                                Add Default
+                                </button>
+            }                                   
                             </div>                            
                          </div>
                         </div>
@@ -185,7 +205,7 @@ const AddLocation = () => {
     return (
         <Layout
             title="Add a new location"
-            description={`G'day Admin`}
+            description={`G'day ${firstName} ${lastName}`}
         >
          <div onClick={() => (setSuccess(false))} className="main main-raised TextStyle">
             <div className="row d-flex justify-content-center">
