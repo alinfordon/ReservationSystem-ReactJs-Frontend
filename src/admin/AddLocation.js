@@ -17,7 +17,7 @@ const AddLocation = () => {
     const [redirect, setRedirect] = useState(false);
 
     const  token  = isAuthenticated().token;
-    const  {firstName, lastName}  = isAuthenticated();
+    const  user  = isAuthenticated();
     
 
      const initLocations = () => {
@@ -205,7 +205,7 @@ const AddLocation = () => {
     return (
         <Layout
             title="Add a new location"
-            description={`G'day ${firstName} ${lastName}`}
+            description={`G'day ${user.firstName} ${user.lastName}`}
         >
          <div onClick={() => (setSuccess(false))} className="main main-raised TextStyle">
             <div className="row d-flex justify-content-center">

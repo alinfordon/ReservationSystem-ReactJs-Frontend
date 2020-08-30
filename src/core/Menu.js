@@ -35,19 +35,7 @@ const Menu = ({ history }) => (
                         Dashboard
                     </Link>
                 </li>
-            )}
-
-            {isAuthenticated() && isAuthenticated().role === "0" && (
-                <li className="nav-item">
-                    <Link
-                        className="nav-link"
-                        style={isActive(history, "/create/order")}
-                        to="/create/order"
-                    >
-                        Book Now
-                    </Link>
-                </li>
-            )}
+            )}            
 
             {isAuthenticated() && isAuthenticated().role === "1" && (
                 <li className="nav-item">
@@ -83,6 +71,18 @@ const Menu = ({ history }) => (
                         </Link>
                     </li>
                 </Fragment>
+            )}
+            
+            {isAuthenticated() && (
+                <li className="nav-item">
+                    <Link
+                        className="nav-link"
+                        style={isActive(history, "/create/order")}
+                        to="/create/order"
+                    >
+                        Book Now
+                    </Link>
+                </li>
             )}
 
             {isAuthenticated() && (

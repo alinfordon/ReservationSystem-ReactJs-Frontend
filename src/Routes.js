@@ -30,22 +30,22 @@ const Routes = () => {
                     exact
                     component={UserDashboard}
                 />     
-                 <Route
+                 <AdminRoute
                     path="/create/location"
                     exact
                     component={AddLocation}
                 />  
-                <Route
+                <AdminRoute
                     path="/create/product"
                     exact
                     component={AddProduct}
                 />   
-                <Route
+                <AdminRoute
                     path="/create/available"
                     exact
                     component={AddAvailable}
                 />  
-                <Route
+                <PrivateRoute
                     path="/create/order"
                     exact
                     component={AddOrder}

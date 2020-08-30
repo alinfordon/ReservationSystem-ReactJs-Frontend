@@ -1,5 +1,6 @@
 import { API } from "../config";
 
+
 export const signup = user => {
     return fetch(`${API}/users/register`, {
         method: "POST",
@@ -44,14 +45,7 @@ export const authenticate = (data, next) => {
 export const signout = next => {
     if (typeof window !== "undefined") {
         localStorage.removeItem("jwt");
-        next();
-        return fetch(`${API}/signout`, {
-            method: "GET"
-        })
-            .then(response => {
-                console.log("signout", response);
-            })
-            .catch(err => console.log(err));
+        next();          
     }
 };
 
@@ -63,5 +57,16 @@ export const isAuthenticated = () => {
         return JSON.parse(localStorage.getItem("jwt"));
     } else {
         return false;
+    }
+};
+
+export function authHeader() {
+    // return authorization header with jwt token
+    let user = JSON.parse(localStorage.getItem('jwt'));
+
+    if (user && user.token) {
+        return { 'Authorization': 'Bearer ' + user.token };
+    } else {
+        return {};
     }
 };
