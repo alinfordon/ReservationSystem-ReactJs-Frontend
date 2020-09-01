@@ -18,6 +18,15 @@ export const getOrders = () => {
         .then(handleResponse);
 };
 
+export const getOrderByDate = dateOfReservation => {
+    console.log(dateOfReservation);
+    return fetch(`${API}/Orders/dateorder/${dateOfReservation}`, {
+        method: "GET",
+        headers: authHeader()
+    })
+        .then(handleResponse);
+};
+
 function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);

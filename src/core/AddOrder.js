@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { getProducts, getLocations, getAvailables } from "../admin/apiAdmin";
 import { createOrder, getOrders } from "./apiCore";
-import moment from "moment";
+import moment from "moment"; 
+import { isAuthenticated } from "../auth";
 
 
 const AddOrder = () => {
@@ -27,6 +28,7 @@ const AddOrder = () => {
     const [availables, setAvailables] = useState([]);
     const [orders, setOrders] = useState([]);
     const [success, setSuccess] = useState(false);
+    const [redirect, setRedirect] = useState(false);
    
     const {
         name,        
@@ -40,6 +42,7 @@ const AddOrder = () => {
         redirectToProfile
     } = values;
 
+    const  user = isAuthenticated()
       
     const initLocations = () => {
         getLocations().then(data => {
@@ -88,8 +91,9 @@ const AddOrder = () => {
         initOrders();      
     }, []);
 
+     
      const handleChange = name => event => {
-        setValues({ ...values, error: false, [name]: event.target.value });
+        setValues({ ...values, name: (user.firstName + " " + user.lastName), error: false, [name]: event.target.value });
     };
 
     const clickSubmit = event => {
@@ -103,7 +107,7 @@ const AddOrder = () => {
             } else {
                 setValues({
                     ...values,
-                    name: "",
+                    name: user.firstName,
                     orderLocation: "",
                     orderProduct: "",
                     dateOfReservation: "", 
@@ -113,6 +117,7 @@ const AddOrder = () => {
                     success: true
                 });  
                 setSuccess(true);
+                setRedirect(true)
             }
         });
     };
@@ -144,14 +149,14 @@ const AddOrder = () => {
     const newPostForm = () => (
         <form className="mb-3 mt-4" onSubmit={clickSubmit}>
             <h4>BOOK AN APPOINTMENT</h4><br/>           
-
+            
             <div className="form-group">
                 <label className="text-muted">Your Name</label>
                 <input
-                    onChange={handleChange("name")}
+                   // onChange={handleChange("name")}
                     type="text"
                     className="form-control"
-                    value={name}
+                    defaultValue={user.firstName + " " + user.lastName}
                 />
             </div>
             <div className="form-group">
@@ -208,9 +213,15 @@ const AddOrder = () => {
                         ))}
                 </select>
             </div>
-            <button className="btn btn-outline-warning">Boock Now</button>
+            <button onClick={() => (setRedirect(true))} className="btn btn-outline-warning">Boock Now</button>            
         </form>
     );
+
+    const shouldRedirect = redirect => {
+        if (redirect) {
+            return <Redirect to="/" />;
+        }
+    };
 
     const showError = () => (
         <div
@@ -240,11 +251,11 @@ const AddOrder = () => {
     return (
         <Layout
             title="BOOK AN APPOINTMENT"
-            description={`G'day User`}
+            description={`G'day ${user.firstName} ${user.lastName}`}
         >
         <div className="main main-raised">
             <div className="row TextStyle">
-                <div className="col-md-8 offset-md-2">
+                <div className="col-md-8 offset-md-2">                    
                     {showLoading()}
                     {showSuccess()}
                     {showError()}

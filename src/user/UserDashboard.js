@@ -26,7 +26,7 @@ const UserDashboard = () => {
     };
 
     useEffect(() => {             
-        initOrders();      
+        initOrders(); 
     }, []);
 
     const showLoading = () =>
@@ -47,7 +47,7 @@ const UserDashboard = () => {
                         </Link>
                     </li>                   
                     <li className="list-group-item">
-                        <Link className="nav-link" to="/user/profile">
+                        <Link className="nav-link" to="profile/:Id">
                             Update Profile
                         </Link>
                     </li>
@@ -65,7 +65,7 @@ const UserDashboard = () => {
                     <li className="list-group-item">Username: {user.username}</li>  
                     <li className="list-group-item">Registered with: User</li>  
                      <li className="list-group-item">
-                        <Link className="text-danger" to="/user/profile">
+                        <Link className="text-danger" to={`/profile/${user.id}`}>
                             Update Profile
                         </Link>
                     </li>                  
@@ -74,7 +74,11 @@ const UserDashboard = () => {
         );
     };
 
-     const orderInfo = () => {
+    const filteredOrderByName = orders.filter(orderByName =>{
+            return (user.firstName + " " + user.lastName) === orderByName.name;             
+        });
+
+    const orderInfo = () => {
         return (
             <div className="mt-4">
                 <h3 className="">Reservation Information</h3>

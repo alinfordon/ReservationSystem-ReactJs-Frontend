@@ -184,7 +184,7 @@ const AddProduct = () => {
 
     return (
         <Layout
-            title="Add a new location"
+            title="Add a new product"
             description={`G'day ${firstName} ${lastName}`}
         >
          <div onClick={() => (setSuccess(false))} className="main main-raised TextStyle">

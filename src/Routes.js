@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./core/Home";
 import Signup from "./user/Signup";
 import Signin from "./user/Signin";
+import Profile from "./user/Profile";
 import UserDashboard from "./user/UserDashboard";
 import AdminDashboard from "./admin/AdminDashboard";
 import PrivateRoute from "./auth/PrivateRoute";
@@ -12,6 +13,7 @@ import AddLocation from "./admin/AddLocation";
 import AddProduct from "./admin/AddProduct";
 import AddAvailable from "./admin/AddAvailable";
 import AddOrder from "./core/AddOrder";
+
 
 const Routes = () => {
     return (
@@ -49,6 +51,11 @@ const Routes = () => {
                     path="/create/order"
                     exact
                     component={AddOrder}
+                />
+                  <PrivateRoute
+                    path="/profile/:Id"
+                    exact
+                    component={Profile}
                 />               
             </Switch>
         </BrowserRouter>

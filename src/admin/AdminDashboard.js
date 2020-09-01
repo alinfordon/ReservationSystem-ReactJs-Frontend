@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { Link } from "react-router-dom";
 import { getAvailables } from "./apiAdmin";
-import { getOrders } from "../core/apiCore";
+import { getOrders, getOrderByDate } from "../core/apiCore";
 import Card from "../core/Card";
 import { isAuthenticated } from "../auth";
+import { getLocalLocation } from "./locationHelper";
+import moment from "moment"; 
 
 const AdminDashboard = () => { 
     const [availables, setAvailables] = useState([]);
+    const [dateOfReservation, setDate] = useState("");
     const [orders, setOrders] = useState([]);    
+     const [local, setLocal] = useState("");
     const [loading, setLoading] = useState(false);
 
     const  user = isAuthenticated();
@@ -26,7 +30,9 @@ const AdminDashboard = () => {
     };
 
     const initOrders = () => {
-        getOrders().then(data => {
+        var today = new Date();
+        today = moment().format('YYYY-MM-DD');        
+        getOrderByDate(today).then(data => {
             if (!data) {
               //  setError(data.error);
                 setLoading(true);
@@ -38,8 +44,9 @@ const AdminDashboard = () => {
     };
 
     useEffect(() => {              
-        initAvailables();  
-        initOrders();      
+        initAvailables();         
+        initOrders();  
+        setLocal(getLocalLocation('location'));      
     }, []);
 
      const showLoading = () =>
@@ -48,6 +55,37 @@ const AdminDashboard = () => {
                 <h2>Loading...</h2>
             </div>
         );
+
+    const handleChange = e => {        
+        setDate(e.target.value); 
+    };
+
+        
+    const clickSubmit = e => {
+        e.preventDefault();              
+        getOrderByDate(dateOfReservation).then(data => {
+            if (data.error) {
+                
+            } else {
+                setOrders(data);
+            }
+        });
+    };
+
+    const searchDateForm = () => (
+        <form onSubmit={clickSubmit}>
+            <div className="form-group h4 mt-2 ">
+                <label className="">Search date</label>
+                <input
+                    type="date"
+                    className="form-control"
+                    onChange={handleChange}
+                    value={dateOfReservation}                    
+                />
+            </div>
+            <button className="btn btn-outline-primary">Search</button>
+        </form>
+    );
 
     const adminLinks = () => {
         return (
@@ -70,7 +108,7 @@ const AdminDashboard = () => {
                         </Link>
                     </li>
                     <li className="list-group-item">
-                        <Link className="nav-link" to="/admin/profile">
+                        <Link className="nav-link" to={`/profile/${user.id}`}>
                             Update Profile
                         </Link>
                     </li>
@@ -86,6 +124,7 @@ const AdminDashboard = () => {
                 <ul className="list-group text-muted">
                     <li className="list-group-item">You are: {user.lastName} {user.firstName}</li>
                     <li className="list-group-item">Username: {user.username}</li>  
+                    <li className="list-group-item">Location: {local}</li> 
                     <li className="list-group-item">Registered with: Admin</li>                    
                 </ul>
             </div>
@@ -114,12 +153,18 @@ const AdminDashboard = () => {
         );
     };
 
+    const filteredOrderByLocation = orders.filter(orderByName =>{
+            return local === orderByName.orderLocation;             
+        });
+
+
+
     const orderInfo = () => {
         return (
             <div className="mt-4">
-                <h3 className="">Reservation Information</h3>
-                <div className="row">
-                    {orders.map((data, o) => (
+                <h3 className="">Reservation Information</h3>                
+                <div className="row mt-2">
+                    {filteredOrderByLocation.map((data, o) => (
                       <Card key={o} order={data} />
                     ))}
                 </div>
@@ -138,8 +183,10 @@ const AdminDashboard = () => {
                 <div className="row d-flex justify-content-center">
                     <div className="col-md-3 ">{adminLinks()}<br/>{adminInfo()}</div>
                     <div className="col-md-8 ">
-                        {showLoading()}
-                        {orderInfo()}   <br />                                 
+                        {showLoading()}  
+                        {searchDateForm()}                      
+                        {orderInfo()}   <br />  
+
                     </div>
                 </div>
             </div>
