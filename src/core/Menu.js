@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { signout, isAuthenticated } from "../auth";
+import {ButtonContainer} from './Button';
 
 const isActive = (history, path) => {
     if (history.location.pathname === path) {
@@ -10,34 +11,32 @@ const isActive = (history, path) => {
     }
 };
 
-const  user = isAuthenticated()
-
 const Menu = ({ history }) => (
     <div>
-        <ul className="nav nav-tabs navbar-dark bg-dark">
+        <ul className="nav nav-tabs navbar-dark bg-dark py-2">
             <li className="nav-item">
                 <Link
                     className="nav-link"
                     style={isActive(history, "/")}
                     to="/"
                 >
-                    Home
+                   <i className="fas fa-home fa-fw" ></i> Home
                 </Link>
             </li>
 
-            {isAuthenticated() && isAuthenticated().role === "0" && (
+            {isAuthenticated() && isAuthenticated().role === "User" && (
                 <li className="nav-item">
                     <Link
                         className="nav-link"
                         style={isActive(history, "/user/dashboard")}
                         to="/user/dashboard"
                     >
-                        Dashboard
+                        <i className="fas fa-users-cog"></i> Dashboard
                     </Link>
                 </li>
             )}            
 
-            {isAuthenticated() && isAuthenticated().role === "1" && (
+            {isAuthenticated() && isAuthenticated().role === "Admin" && (
                 <li className="nav-item">
                     <Link
                         className="nav-link"
@@ -57,24 +56,13 @@ const Menu = ({ history }) => (
                             style={isActive(history, "/signin")}
                             to="/signin"
                         >
-                            Signin
+                            <i class="fas fa-sign-in-alt"> Signin</i> 
                         </Link>
-                    </li>
-
-                    <li className="nav-item">
-                        <Link
-                            className="nav-link"
-                            style={isActive(history, "/signup")}
-                            to="/signup"
-                        >
-                            Signup
-                        </Link>
-                    </li>
+                    </li>                    
                 </Fragment>
             )}
-            
-            {isAuthenticated() && (
-                <li className="nav-item">
+                        
+                <li className="nav-item d-flex ml-auto ">
                     <Link
                         className="nav-link"
                         style={isActive(history, "/create/order")}
@@ -83,7 +71,7 @@ const Menu = ({ history }) => (
                         Book Now
                     </Link>
                 </li>
-            )}
+         
 
             {isAuthenticated() && (
                 <li className="nav-item">
@@ -96,7 +84,7 @@ const Menu = ({ history }) => (
                             })
                         }
                     >
-                        Signout
+                       <i className="fas fa-sign-out-alt"></i> Signout
                     </span>
                 </li>
             )}

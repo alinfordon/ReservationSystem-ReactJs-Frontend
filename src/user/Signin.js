@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Redirect } from "react-router-dom";
 import Layout from "../core/Layout";
 import { signin, authenticate, isAuthenticated } from "../auth";
 
@@ -12,10 +12,7 @@ const Signin = () => {
         redirectToReferrer: false
     });
 
-    const { Username, Password, loading, error, redirectToReferrer } = values;
-    const { user } = isAuthenticated();
-
-
+    const { Username, Password, loading, error, redirectToReferrer } = values;  
 
     const handleChange = name => event => {
         setValues({ ...values, error: false, [name]: event.target.value });
@@ -26,6 +23,7 @@ const Signin = () => {
         setValues({ ...values, error: false, loading: true });
         signin({ Username, Password }).then(data => {
             if (data.error) {
+                console.log(data)
                 setValues({ ...values, error: data.error, loading: false });
             } else {
                 authenticate(data, () => {
@@ -39,7 +37,7 @@ const Signin = () => {
     };
 
     const signUpForm = () => (
-        <form>
+        <form className="col-md-8 py-4">
             <div className="form-group">
                 <label className="text-muted">User Name</label>
                 <input
@@ -59,9 +57,14 @@ const Signin = () => {
                     value={Password}
                 />
             </div>
-            <button onClick={clickSubmit} className="btn btn-primary">
-                Submit
-            </button>
+             <button onClick={clickSubmit} className="btn btn-primary">
+                <i className="fas fa-sign-in-alt"></i> Signin
+            </button> or <span></span>
+            <Link to="/signup" >
+                <button className="btn btn-primary">
+                    <i className="fas fa-user-plus"></i> Register
+                </button>
+            </Link>
         </form>
     );
 
@@ -82,11 +85,10 @@ const Signin = () => {
         );
 
     const redirectUser = () => {
-        if (redirectToReferrer) {
-            console.log();
-            if (isAuthenticated() && isAuthenticated().role === "1") {
+        if (redirectToReferrer) {            
+            if (isAuthenticated() && isAuthenticated().role === "Admin") {
                 return <Redirect to="/admin/dashboard" />;
-            } else {
+            } else if (isAuthenticated() && isAuthenticated().role === "User") {
                 return <Redirect to="/user/dashboard" />;
             }
         }
@@ -99,12 +101,18 @@ const Signin = () => {
         <Layout
             title="Signin"
             description="Signin to our salon"
-            className="container col-md-8 offset-md-2"
+            
         >
-            {showLoading()}
-            {showError()}
-            {signUpForm()}
-            {redirectUser()}
+        <div className="container-fluid ">
+            <div className="main main-raised TextStyle">
+                <div className="row d-flex justify-content-center">
+                {showLoading()}
+                {showError()}                
+                {signUpForm()}
+                {redirectUser()}
+                </div>
+            </div>
+        </div>
         </Layout>
     );
 };

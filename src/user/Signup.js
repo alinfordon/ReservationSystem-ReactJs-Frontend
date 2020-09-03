@@ -36,7 +36,7 @@ const Signup = () => {
     };
 
     const signUpForm = () => (
-        <form>
+        <form className="col-md-8 py-4">
             <div className="form-group">
                 <label className="text-muted">First Name</label>
                 <input
@@ -104,11 +104,15 @@ const Signup = () => {
         <Layout
             title="Signup"
             description="Signup to our salon"
-            className="container col-md-8 offset-md-2"
+            className="container-fluid"
         >
-            {showSuccess()}
-            {showError()}
-            {signUpForm()}
+             <div className="main main-raised TextStyle">
+                <div className="row d-flex justify-content-center">
+                    {showSuccess()}
+                    {showError()}
+                    {signUpForm()}
+                </div>
+            </div>
         </Layout>
     );
 };

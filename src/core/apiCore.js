@@ -18,9 +18,24 @@ export const getOrders = () => {
         .then(handleResponse);
 };
 
-export const getOrderByDate = dateOfReservation => {
-    console.log(dateOfReservation);
+export const deleteOrder = (orderId) => {
+    return fetch(`${API}/Orders/${orderId}`, {
+        method: "DELETE",
+        headers: authHeader()
+        })    
+        .then(handleResponse);
+};
+
+export const getOrderByDate = dateOfReservation => {    
     return fetch(`${API}/Orders/dateorder/${dateOfReservation}`, {
+        method: "GET",
+        headers: authHeader()
+    })
+        .then(handleResponse);
+};
+
+export const getOrderByName = name => {    
+    return fetch(`${API}/Orders/userorder/${name}`, {
         method: "GET",
         headers: authHeader()
     })

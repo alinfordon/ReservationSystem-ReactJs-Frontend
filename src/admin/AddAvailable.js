@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 import { createAvailable, getAvailables, deleteAvailable, getAvailable, updateAvailable } from "./apiAdmin";
 
@@ -12,13 +12,11 @@ const AddAvailable = () => {
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [redirect, setRedirect] = useState(false);
 
     const  token  = isAuthenticated().token; 
-    const  {firstName, lastName}  = isAuthenticated();
-    
+    const  {firstName, lastName}  = isAuthenticated();    
 
-     const initAvailables = () => {
+    const initAvailables = () => {
         getAvailables(token).then(data => {
             if (!data) {
               //  setError(data.error);
@@ -32,13 +30,7 @@ const AddAvailable = () => {
 
     useEffect(() => {       
         initAvailables();            
-    }, []);
-
-    const shouldRedirect = redirect => {
-        if (redirect) {
-            return <Redirect to="/admin/dashboard" />;
-        }
-    };
+    }, []);   
 
     const handleChange = e => {
         setError("");
@@ -134,8 +126,7 @@ const AddAvailable = () => {
         return (
             <div className="mt-2">
                 <h3 className="">Available Hours Information</h3>
-                <div className="row">
-                    {shouldRedirect(redirect)}
+                <div className="row">                    
                     {availables.map((data, i) => (
                        <div key={i} className="card container-fluid text-muted">
                          <div className="row" style={{ borderBottom: "3px solid indigo"}}>
@@ -188,20 +179,20 @@ const AddAvailable = () => {
             title="Add a new available hours"
             description={`G'day ${firstName} ${lastName}`}
         >
-         <div onClick={() => (setSuccess(false))} className="main main-raised TextStyle">
-            <div className="row d-flex justify-content-center">
-                <div className="card col-md-3 mt-5 mr-4">
-                    {showSuccess()}
-                    {showError()}
-                    {!edit ? newAvailableForm() : updateAvailableForm()}                    
+             <div onClick={() => (setSuccess(false))} className="main main-raised TextStyle">
+                <div className="row d-flex justify-content-center">
+                    <div className="card col-md-3 mt-5 mr-4">
+                        {showSuccess()}
+                        {showError()}
+                        {!edit ? newAvailableForm() : updateAvailableForm()}                    
+                    </div>
+                    <div className="col-md-8 mt-5 ">                    
+                        {showLoading()}                    
+                        {availableInfo()}                    
+                    </div>
                 </div>
-                <div className="col-md-8 mt-5 ">                    
-                    {showLoading()}                    
-                    {availableInfo()}                    
-                </div>
+                <div className="d-flex justify-content-center">{goBack()}</div>
             </div>
-            <div className="d-flex justify-content-center">{goBack()}</div>
-        </div>
         </Layout>
     );
 };

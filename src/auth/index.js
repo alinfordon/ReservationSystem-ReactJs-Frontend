@@ -8,14 +8,9 @@ export const signup = user => {
             Accept: "application/json",
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(user)
+        body: JSON.stringify(user) 
     })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => {
-            console.log(err);
-        });
+        .then(handleResponse);
 };
 
 export const signin = user => {
@@ -27,12 +22,8 @@ export const signin = user => {
         },
         body: JSON.stringify(user)
     })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => {
-            console.log(err);
-        });
+        .then(handleResponse)
+        
 };
 
 export const authenticate = (data, next) => {
@@ -70,3 +61,22 @@ export function authHeader() {
         return {};
     }
 };
+
+function logout() {   
+    localStorage.removeItem('jwt');
+}
+
+function handleResponse(response) {
+    return response.text().then(text => {
+        const data = text && JSON.parse(text);
+        if (!response.ok) {
+            if (response.status === 401) {
+               logout();             
+            }
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+        }
+
+        return data;
+    });
+}

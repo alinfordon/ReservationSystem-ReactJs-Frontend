@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 import { createProduct, getProducts, deleteProduct, getProduct, updateProduct } from "./apiAdmin";
 
@@ -11,8 +11,7 @@ const AddProduct = () => {
     const [edit, setEdit] = useState(false);
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [redirect, setRedirect] = useState(false);
+    const [loading, setLoading] = useState(false);    
 
     const  token  = isAuthenticated().token;
     const  {firstName, lastName}  = isAuthenticated();
@@ -32,12 +31,6 @@ const AddProduct = () => {
     useEffect(() => {       
         initProducts();            
     }, []);
-
-    const shouldRedirect = redirect => {
-        if (redirect) {
-            return <Redirect to="/admin/dashboard" />;
-        }
-    };
 
     const handleChange = e => {
         setError("");
@@ -133,8 +126,7 @@ const AddProduct = () => {
         return (
             <div className="mt-2">
                 <h3 className="">Product Information</h3>
-                <div className="row">
-                    {shouldRedirect(redirect)}
+                <div className="row">                    
                     {products.map((data, i) => (
                        <div key={i} className="card container-fluid text-muted">
                          <div className="row" style={{ borderBottom: "3px solid indigo"}}>
@@ -187,20 +179,20 @@ const AddProduct = () => {
             title="Add a new product"
             description={`G'day ${firstName} ${lastName}`}
         >
-         <div onClick={() => (setSuccess(false))} className="main main-raised TextStyle">
-            <div className="row d-flex justify-content-center">
-                <div className="card col-md-3 mt-5 mr-4">
-                    {showSuccess()}
-                    {showError()}
-                    {!edit ? newProductForm() : updateProductForm()}                    
+             <div onClick={() => (setSuccess(false))} className="main main-raised TextStyle">
+                <div className="row d-flex justify-content-center">
+                    <div className="card col-md-3 mt-5 mr-4">
+                        {showSuccess()}
+                        {showError()}
+                        {!edit ? newProductForm() : updateProductForm()}                    
+                    </div>
+                    <div className="col-md-8 mt-5 ">                    
+                        {showLoading()}                    
+                        {locationInfo()}                    
+                    </div>
                 </div>
-                <div className="col-md-8 mt-5 ">                    
-                    {showLoading()}                    
-                    {locationInfo()}                    
-                </div>
+                <div className="d-flex justify-content-center">{goBack()}</div>
             </div>
-            <div className="d-flex justify-content-center">{goBack()}</div>
-        </div>
         </Layout>
     );
 };

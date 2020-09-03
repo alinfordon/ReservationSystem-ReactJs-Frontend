@@ -32,10 +32,6 @@ const AddLocation = () => {
         });
     };
 
-     const addDefaultLocation = () => {
-        addLocalLocation();
-    }; 
-
     useEffect(() => {       
         initLocations();     
         setLocal(getLocalLocation('location'));             
@@ -150,22 +146,21 @@ const AddLocation = () => {
                          <div className="row" style={{ borderBottom: "3px solid indigo"}}>
                             <div className="col-7 mx-auto col-lg-8  my-2">{data.locationName}</div>
                              <div className="col-7 mx-auto col-lg-4  my-2 d-flex justify-content-center">                                                       
-                                <button onClick={() => initEdit(data.locationId)} className="btn btn-outline-primary mr-2">
+                                <button onClick={() => initEdit(data.locationId)} className="btn btn-outline-warning mr-2">
                                   Edit
-                                 </button>
-                                 <button onClick={() => destroy(data.locationId)} className="btn btn-outline-danger mr-2">
-                                  Delete
-                                 </button>        
+                                 </button>                                        
                                  {local === data.locationName ?
-                                <button className="btn btn-outline-success mr-4" 
+                                <button className="btn btn-outline-success mr-2" 
                                                 onClick={() => (emptyLocalLocation(data.locationName), setRedirect(true))} >
-                                                Is Default
+                                                It's Default
                                 </button>:
-                                <button className="btn btn-outline-primary mr-4" 
+                                <button className="btn btn-outline-warning mr-2" 
                                                 onClick={() => (addLocalLocation(data.locationName), setRedirect(true))} >
                                                 Add Default
                                 </button>
-            }                                   
+            }                   <button onClick={() => destroy(data.locationId)} className="btn btn-outline-danger mr-2">
+                                  Delete
+                                </button>                 
                             </div>                            
                          </div>
                         </div>

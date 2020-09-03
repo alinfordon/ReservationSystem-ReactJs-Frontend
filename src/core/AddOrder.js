@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { getProducts, getLocations, getAvailables } from "../admin/apiAdmin";
 import { createOrder, getOrders } from "./apiCore";
 import moment from "moment"; 
 import { isAuthenticated } from "../auth";
+import {ButtonContainer} from '../core/Button';
 
 
 const AddOrder = () => {
@@ -122,7 +123,10 @@ const AddOrder = () => {
         });
     };
 
-    const filteredOrdersByDate = orders.filter(orderByDate =>{   
+    const filteredOrdersByLocation = orders.filter(orderByLocation =>{  
+            return orderLocation === orderByLocation.orderLocation;  
+        });   
+    const filteredOrdersByDate = filteredOrdersByLocation.filter(orderByDate =>{   
             let orderByDateFormat = moment(orderByDate.dateOfReservation).format('DD/MM/YYYY');
             let dateOfReservationFormat = moment(dateOfReservation).format('DD/MM/YYYY');
             return dateOfReservationFormat === orderByDateFormat;  
@@ -148,7 +152,7 @@ const AddOrder = () => {
 
     const newPostForm = () => (
         <form className="mb-3 mt-4" onSubmit={clickSubmit}>
-            <h4>BOOK AN APPOINTMENT</h4><br/>           
+            <h4 >BOOK AN APPOINTMENT</h4><br/>           
             
             <div className="form-group">
                 <label className="text-muted">Your Name</label>
@@ -213,7 +217,7 @@ const AddOrder = () => {
                         ))}
                 </select>
             </div>
-            <button onClick={() => (setRedirect(true))} className="btn btn-outline-warning">Boock Now</button>            
+            <ButtonContainer onClick={() => (setRedirect(true))} className="shadow">Book Now</ButtonContainer>            
         </form>
     );
 
@@ -237,7 +241,7 @@ const AddOrder = () => {
             className="alert alert-info"
             style={{ display: createdOrder ? "" : "none" }}
         >
-            <h2>{`${createdOrder}`} is created!</h2>
+            <h2>Dear {`${createdOrder}`}, your order has been sent!</h2>
         </div>
     );
 
