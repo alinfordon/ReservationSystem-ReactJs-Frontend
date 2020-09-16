@@ -48,7 +48,7 @@ const AddLocation = () => {
         setName(e.target.value); 
     };
 
-    
+        
     const destroy = locationId => { 
         deleteLocation(locationId).then(data => {
             if (data.error) {

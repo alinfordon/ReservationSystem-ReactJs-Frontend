@@ -1,4 +1,4 @@
-import React from "react";
+/import React from "react";
 import Layout from "./Layout";
 import { Link } from "react-router-dom";
 import "../styles.css";
@@ -106,25 +106,25 @@ const Home = () => {
                         <div className="col-lg-4 col-12 mb-0 mb-md-4 pb-0 pb-md-2">
                          <h4 className="text-light footer-head">Our Locations</h4>
                             <ul className="list-unstyled footer-list mt-4">
-                                <li><a href="#" className="text-foot text-light"> Oradea, str. Doina, nr. 36</a></li>
-                                <li><a href="#" className="text-foot text-light"> Beius, str. A. Saguna, nr.5</a></li>
-                                <li><a href="#" className="text-foot text-light"> SStei, str. Unirii, nr 23</a></li>                                                   
+                                <li><a href="/" className="text-foot text-light"> Oradea, str. Doina, nr. 36</a></li>
+                                <li><a href="/" className="text-foot text-light"> Beius, str. A. Saguna, nr.5</a></li>
+                                <li><a href="/" className="text-foot text-light"> SStei, str. Unirii, nr 23</a></li>                                                   
                             </ul>  
                         </div>
                         <div className="col-lg-2 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                             <h4 className="text-light footer-head">Company</h4>
                             <ul className="list-unstyled footer-list mt-4">
-                                <li><a href="#" className="text-foot text-light"> About us</a></li>
-                                <li><a href="#" className="text-foot text-light"> FAQ</a></li>
-                                <li><a href="#" className="text-foot text-light"> Services</a></li>                                                   
+                                <li><a href="/" className="text-foot text-light"> About us</a></li>
+                                <li><a href="/" className="text-foot text-light"> FAQ</a></li>
+                                <li><a href="/" className="text-foot text-light"> Services</a></li>                                                   
                             </ul>
                         </div>
                         <div className="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                             <h4 className="text-light footer-head">Useful Links</h4>
                             <ul className="list-unstyled footer-list mt-4">
-                                <li><a href="#" className="text-foot text-light"> Terms of Services</a></li>
-                                <li><a href="#" className="text-foot text-light"> Privacy Policy</a></li>
-                                <li><a href="#" className="text-foot text-light"> Login</a></li>
+                                <li><a href="/" className="text-foot text-light"> Terms of Services</a></li>
+                                <li><a href="/" className="text-foot text-light"> Privacy Policy</a></li>
+                                <li><a href="/" className="text-foot text-light"> Login</a></li>
                             </ul>
                         </div>
                         <div className="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
